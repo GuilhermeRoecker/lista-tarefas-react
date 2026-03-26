@@ -19,7 +19,7 @@ function AddTaskModal({ onClose, onAdd, onUpdate, task }) {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState("aberto");
-  const [errors, setErrors] = useState({}); // ✅ faltava isso
+  const [errors, setErrors] = useState({}); 
 
   useEffect(() => {
     if (task) {
