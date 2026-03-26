@@ -16,7 +16,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-
 app.get("/tasks", async (req, res) => {
   const result = await pool.query(
     "SELECT * FROM todo_list.tasks ORDER BY id DESC"
