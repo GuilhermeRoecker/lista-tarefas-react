@@ -1,81 +1,73 @@
 import { useEffect, useState } from "react";
 
+const API = "/api/tasks";
+
 export function useTasks() {
   const [tasks, setTasks] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // carregar dados
+  const fetchTasks = async () => {
+    const res = await fetch(API);
+    const data = await res.json();
+    setTasks(data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const saved = localStorage.getItem("tasks");
-
-    fetch("https://jsonplaceholder.typicode.com/todos?_limit=8")
-      .then(res => res.json())
-      .then(data => {
-        setSuggestions(data);
-
-        if (!saved) {
-          setTasks(data.slice(0, 3));
-        }
-      })
-      .finally(() => setLoading(false));
-
-    if (saved) {
-      setTasks(JSON.parse(saved));
-    }
+    fetchTasks();
   }, []);
 
-  // persistência
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  const addTask = async (task) => {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(task),
+    });
 
-  // adicionar (com validação)
-  const addTask = (title) => {
-    const clean = title.trim();
-    if (!clean) return;
-
-    // ❗ evitar duplicadas
-    if (tasks.some(t => t.title.toLowerCase() === clean.toLowerCase())) {
-      return;
-    }
-
-    const newTask = {
-      id: Date.now(),
-      title: clean,
-      completed: false
-    };
-
-    setTasks(prev => [...prev, newTask]);
+    const newTask = await res.json();
+    setTasks(prev => [newTask, ...prev]);
   };
 
-  const updateTask = (id, newTitle) => {
+  const updateTask = async (id, updatedFields) => {
+    const res = await fetch(`${API}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedFields),
+    });
+
+    const updated = await res.json();
+
     setTasks(prev =>
-      prev.map(t =>
-        t.id === id ? { ...t, title: newTitle } : t
-      )
+      prev.map(t => (t.id === id ? updated : t))
     );
   };
 
-  const toggleTask = (id) => {
+  const toggleTask = async (id) => {
+    const res = await fetch(`${API}/${id}/toggle`, {
+      method: "PATCH",
+    });
+
+    const updated = await res.json();
+
     setTasks(prev =>
-      prev.map(t =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      )
+      prev.map(t => (t.id === id ? updated : t))
     );
   };
 
-  const removeTask = (id) => {
+  const removeTask = async (id) => {
+    await fetch(`${API}/${id}`, {
+      method: "DELETE",
+    });
+
     setTasks(prev => prev.filter(t => t.id !== id));
   };
 
   return {
     tasks,
-    suggestions,
     loading,
     addTask,
     updateTask,
     toggleTask,
-    removeTask
+    removeTask,
   };
 }

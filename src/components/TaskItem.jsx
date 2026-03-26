@@ -1,36 +1,26 @@
-import { useState } from "react";
-
-function TaskItem({ task, onToggle, onRemove, onUpdate }) {
-  const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(task.title);
-
-  const handleSave = () => {
-    if (!value.trim()) return;
-    onUpdate(task.id, value);
-    setEditing(false);
-  };
-
+function TaskItem({ task, onToggle, onRemove, onEdit }) {
   return (
     <div className="task-item">
-      {editing ? (
-        <input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSave()}
-          onBlur={handleSave}
-          autoFocus
-        />
-      ) : (
+      <div className="task-content">
         <span
           onClick={() => onToggle(task.id)}
-          onDoubleClick={() => setEditing(true)}
           className={task.completed ? "done" : ""}
         >
           {task.title}
         </span>
-      )}
 
-      <button onClick={() => onRemove(task.id)}>X</button>
+        <small>{task.description}</small>
+
+        <div className="task-meta">
+          <span>{task.status}</span>
+          <span>{task.dueDate}</span>
+        </div>
+      </div>
+
+      <div className="task-actions">
+        <button onClick={() => onEdit(task)}>Editar</button>
+        <button onClick={() => onRemove(task.id)}>Excluir</button>
+      </div>
     </div>
   );
 }

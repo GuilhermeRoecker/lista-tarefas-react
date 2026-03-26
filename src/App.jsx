@@ -6,7 +6,6 @@ import { useTasks } from "./hooks/useTasks";
 function App() {
   const {
     tasks,
-    suggestions,
     loading,
     addTask,
     updateTask,
@@ -17,6 +16,7 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   const filteredTasks = tasks
     .filter(t => {
@@ -45,7 +45,10 @@ function App() {
           <option value="done">Concluídas</option>
         </select>
 
-        <button onClick={() => setOpenModal(true)}>
+        <button onClick={() => {
+          setEditingTask(null);
+          setOpenModal(true);
+        }}>
           + Nova tarefa
         </button>
       </div>
@@ -59,15 +62,22 @@ function App() {
           tasks={filteredTasks}
           onToggle={toggleTask}
           onRemove={removeTask}
-          onUpdate={updateTask}
+          onEdit={(task) => {
+            setEditingTask(task);
+            setOpenModal(true);
+          }}
         />
       )}
 
       {openModal && (
         <AddTaskModal
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setOpenModal(false);
+            setEditingTask(null);
+          }}
           onAdd={addTask}
-          suggestions={suggestions}
+          onUpdate={updateTask}
+          task={editingTask}
         />
       )}
     </div>
