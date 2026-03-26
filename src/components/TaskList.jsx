@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem";
 
-function TaskList({ tasks, onToggle, onRemove, onUpdate }) {
+function TaskList({ tasks, onToggle, onRemove, onEdit }) {
   if (!tasks.length) {
     return <p className="empty">Nenhuma tarefa encontrada</p>;
   }
@@ -13,7 +13,7 @@ function TaskList({ tasks, onToggle, onRemove, onUpdate }) {
           task={task}
           onToggle={onToggle}
           onRemove={onRemove}
-          onUpdate={onUpdate}
+          onEdit={onEdit}
         />
       ))}
     </div>
