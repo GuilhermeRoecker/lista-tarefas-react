@@ -1,98 +1,144 @@
-# 📝 Lista de Tarefas (React)
+# 📝 Lista de Tarefas (Fullstack)
 
-Aplicação de lista de tarefas desenvolvida com React, focada em demonstrar organização de código, gerenciamento de estado e consumo de API.
+Aplicação de lista de tarefas desenvolvida com frontend em React e backend em Node.js, com persistência em banco de dados PostgreSQL.
+
+A aplicação foi estruturada para simular um cenário real de consumo de API e deploy.
 
 ---
 
 ## 🚀 Funcionalidades
 
-* ✅ Listar tarefas (API + localStorage)
-* ➕ Adicionar nova tarefa (via modal)
-* ✏️ Editar tarefa (duplo clique)
+* ✅ Listar tarefas (via API)
+* ➕ Adicionar nova tarefa
+* ✏️ Editar tarefa
 * ✔️ Marcar como concluída
 * ❌ Remover tarefa
-* 🔍 Buscar tarefas
-* 🎯 Filtrar (todas / pendentes / concluídas)
-* 💾 Persistência com localStorage
-* 💡 Sugestões de tarefas via API
+* 🔄 Atualização em tempo real após operações
 
 ---
 
 ## 🧠 Tecnologias utilizadas
 
-* React (Hooks)
+### Frontend
+
+* React (com Vite)
 * JavaScript (ES6+)
-* CSS3
-* API pública:
-  https://jsonplaceholder.typicode.com/todos
+* CSS
+
+### Backend
+
+* Node.js
+* Express
+* PostgreSQL
+
+### Infraestrutura
+
+* Nginx (proxy reverso)
+* Deploy local com exposição externa via IP
 
 ---
 
 ## 📂 Estrutura do projeto
 
 ```
-src/
-  components/
-    TaskItem.jsx
-    TaskList.jsx
-    AddTaskModal.jsx
-  hooks/
-    useTasks.js
-  styles/
-    modal.css
-  App.jsx
-  main.jsx
-  index.css
+lista-tarefas/
+├── src/                # Frontend (React)
+├── dist/               # Build do frontend
+├── server.js           # Backend (API)
+├── package.json
 ```
 
 ---
 
 ## ⚙️ Como rodar o projeto
 
+### 1. Instalar dependências
+
 ```bash
-# clonar repositório
-git clone <seu-repo>
-
-# entrar na pasta
-cd <seu-repo>
-
-# instalar dependências
 npm install
+```
 
-# rodar o projeto
+---
+
+### 2. Rodar backend
+
+```bash
+node server.js
+```
+
+A API estará disponível em:
+
+```txt
+http://localhost:3001/tasks
+```
+
+---
+
+### 3. Rodar frontend (modo desenvolvimento)
+
+```bash
 npm run dev
 ```
 
 ---
 
+### 4. Build para produção
+
+```bash
+npm run build
+```
+
+---
+
+### 5. Servir com Nginx
+
+O Nginx deve estar configurado para:
+
+* Servir o frontend a partir da pasta `dist`
+* Redirecionar `/api` para o backend (porta 3001)
+
+---
+
+## 🌐 Acesso à aplicação
+
+```txt
+http://todolist.roecker.com.br:8080
+```
+
+> A aplicação está exposta na porta 8080 devido a restrições do provedor em portas padrão (80/443).
+
+---
+
 ## 📌 Conceitos aplicados
 
-* Componentização
-* Gerenciamento de estado com useState
-* Efeitos colaterais com useEffect
-* Criação de hooks customizados
-* Manipulação de listas (map, filter)
-* Persistência local (localStorage)
-* Separação de responsabilidades
+* Arquitetura cliente-servidor
+* Criação de API REST
+* Integração frontend-backend
+* Manipulação de estado no React
+* Hooks customizados
+* Proxy reverso com Nginx
+* Deploy em ambiente real
 
 ---
 
 ## 🎯 Objetivo do projeto
 
-Este projeto foi desenvolvido com foco em prática de:
+Demonstrar a construção de uma aplicação fullstack simples, incluindo:
 
-* Desenvolvimento frontend com React
-* Estruturação de aplicações
-* Simulação de um fluxo real de produto
+* Desenvolvimento de API
+* Consumo de dados no frontend
+* Organização de código
+* Deploy e disponibilização externa
 
 ---
 
 ## 📈 Possíveis melhorias futuras
 
-* Animações (entrada/remoção de tarefas)
-* Integração com API real (CRUD completo)
-* Sistema de autenticação
+* Autenticação de usuários
+* Validações mais robustas
+* Paginação de tarefas
 * Testes automatizados
+* Containerização com Docker
 
 ---
 
